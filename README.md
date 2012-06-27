@@ -13,15 +13,35 @@ Run the following command:
 git submodule add git://github.com/Blackshawk/SymfonyReactorBundle.git vendor/bundles/Blackshawk/SymfonyReactorBundle
 ```
 
-Then register the new bundle in your AppKernel
+Then register the new bundle in your autoloader and AppKernel.
 
 ```php
-    // app/autoload.php
+<?php
+    // #app/autoload.php
     $loader->registerNamespaces(array(
         'Blackshawk' => __DIR__.'/../vendor/bundles',
         // your other namespaces
     ));
+    
+    // #app/AppKernel.php
+    $bundles = array(
+        new Blackshawk\SymfonyReactorBundle\BlackshawkSymfonyReactorBundle(),
+        // your other bundles
+    );
+    
 ```
+
+Open up app/config/routing.yml and register the new bundle's routing information. You may also wish to open routing_dev.yml and
+comment out the default / pattern for the Acme bundle as well.
+
+```
+# app/config/routing.yml
+
+BlackshawkSymfonyReactorBundle:
+    resource: "@BlackshawkSymfonyReactorBundle/Resources/config/routing.yml"
+    prefix:   /
+```
+
 
 After this you will need to create a new front controller for your Symfony application - I recommend calling it "app_reactor.php" in your web/ directory. (This will take the place app.php or app_dev.php.)
 
